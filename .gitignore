@@ -1,0 +1,40 @@
+# Ham ve işlenmiş veri seti (Kaggle'dan indirilir / script ile üretilir)
+SROIE2019/
+data/raw/**
+!data/raw/.gitkeep
+data/processed/**
+!data/processed/.gitkeep
+
+# Çıktılar
+outputs/logs/*
+!outputs/logs/.gitkeep
+outputs/figures/*
+!outputs/figures/.gitkeep
+outputs/models/*
+!outputs/models/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Model ağırlıkları
+*.pth
+*.pt
+*.ckpt
+
+# Gizli dosyalar
+.env
+*.env
+
+# Jupyter
+.ipynb_checkpoints/
