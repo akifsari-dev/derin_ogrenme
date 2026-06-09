@@ -4,10 +4,14 @@ data/raw/**
 !data/raw/.gitkeep
 data/processed/**
 !data/processed/.gitkeep
+!data/processed/dataset/
+!data/processed/dataset/**
 
 # Çıktılar
 outputs/logs/*
 !outputs/logs/.gitkeep
+!outputs/logs/split_report.txt
+!outputs/logs/class_distribution.csv
 outputs/figures/*
 !outputs/figures/.gitkeep
 outputs/models/*

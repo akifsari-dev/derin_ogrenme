@@ -1,0 +1,40 @@
+============================================================
+Train / Val Ayrım Raporu (Kırpılmış Alan Görüntüleri)
+Tarih: 2026-06-09T15:31:43.443979
+============================================================
+
+Veri klasörü: D:\derin_ogrenme\data\processed\dataset
+Val oranı: 10% | random_state=42
+
+Train fiş sayısı: 563
+Val fiş sayısı:   63
+
+--- Örnek Sayıları ---
+Toplam görüntü: 3892
+Train: 2252
+Val:   252
+Test:  1388
+
+--- Sınıf Bazlı ---
+
+[TRAIN]
+  Address   : 563
+  Company   : 563
+  Date      : 563
+  Total     : 563
+
+[VAL]
+  Address   : 63
+  Company   : 63
+  Date      : 63
+  Total     : 63
+
+[TEST]
+  Address   : 347
+  Company   : 347
+  Date      : 347
+  Total     : 347
+
+Eksik sınıflı fiş: 0
+
+Not: Aynı fişten türetilen 4 görüntü aynı split'te kaldı.

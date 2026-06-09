@@ -1,0 +1,13 @@
+split,class,count
+train,Address,563
+train,Company,563
+train,Date,563
+train,Total,563
+val,Address,63
+val,Company,63
+val,Date,63
+val,Total,63
+test,Address,347
+test,Company,347
+test,Date,347
+test,Total,347

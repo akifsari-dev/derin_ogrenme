@@ -13,7 +13,7 @@ Fiş görüntülerini aşağıdaki 4 bilgi alanı sınıfından birine göre sı
 | Date    | Tarih bilgisi                     |
 | Total   | Toplam tutar                      |
 
-Her fiş görüntüsü, entity annotation dosyasındaki mevcut alanlara göre ilgili sınıf klasörlerine kopyalanır (ör. `X51009453804_company.jpg`).
+Her fiş alanı (Company, Address, Date, Total), ilgili metin bölgesinden kırpılarak ayrı bir görüntü örneği olarak kaydedilir (ör. `X51009453804_Company.jpg`).
 
 ## Proje Klasör Yapısı
 
@@ -43,8 +43,10 @@ derin_ogrenme/
 │   ├── figures/                  # Eğitim grafikleri (sonraki aşama)
 │   └── models/                   # Kaydedilen modeller (sonraki aşama)
 ├── scripts/
-│   ├── prepare_sroie_dataset.py  # Veri dönüştürme
-│   └── check_dataset.py          # Veri seti kontrolü
+│   ├── prepare_sroie_dataset.py  # Ham SROIE → ImageFolder (opsiyonel)
+│   ├── split_train_val.py        # Train'den %10 val ayrımı
+│   ├── check_dataset.py          # Veri seti kontrolü
+│   └── train_resnet50.py         # ResNet50 eğitimi
 ├── requirements.txt
 └── README.md
 ```
@@ -90,20 +92,24 @@ Move-Item -Path SROIE2019 -Destination data\raw\
 mv SROIE2019 data/raw/
 ```
 
-### 3. Veri Dönüştürme
+### 3. İşlenmiş Veri Seti (Kırpılmış Alan Görüntüleri)
+
+Bu repoda `data/processed/dataset/` altında **kırpılmış alan görüntüleri** hazır bulunur:
+
+- `train/` ve `test/` klasörleri manuel olarak oluşturulmuştur
+- `val/` klasörü `split_train_val.py` ile train'den ayrılır
+
+Train/val ayrımı (fiş düzeyinde %90 / %10):
+
+```bash
+python scripts/split_train_val.py --data_dir data/processed/dataset
+```
+
+Ham veriden sıfırdan üretmek isterseniz:
 
 ```bash
 python scripts/prepare_sroie_dataset.py --raw_dir data/raw --output_dir data/processed/dataset
 ```
-
-Script şunları yapar:
-
-- Ham klasör yapısını otomatik analiz eder
-- Entity dosyalarından Company, Address, Date, Total alanlarını okur
-- Her sınıf için fiş görüntüsünü `{receipt_id}_{class}.jpg` adıyla kopyalar
-- Orijinal **test** setini korur (eğitime dahil etmez)
-- Orijinal **train** setini fiş düzeyinde %90 train / %10 validation olarak böler (`random_state=42`)
-- Aynı fişten türetilen örneklerin train ve val arasında bölünmesini engeller
 
 ### 4. Veri Seti Kontrolü
 
@@ -119,11 +125,12 @@ Bu komut:
 
 ## Beklenen Veri Bölümleri
 
-| Split | Yaklaşık fiş sayısı | Yaklaşık görüntü sayısı (×4 sınıf) |
-|-------|---------------------|-------------------------------------|
-| Train | ~563 fiş            | ~2250 görüntü                       |
-| Val   | ~63 fiş             | ~250 görüntü                        |
-| Test  | ~347 fiş (orijinal) | ~1380 görüntü                       |
+| Split | Fiş sayısı | Görüntü sayısı (×4 sınıf) |
+|-------|------------|---------------------------|
+| Train | 563        | 2.252                     |
+| Val   | 63         | 252                       |
+| Test  | 347        | 1.388                     |
+| **Toplam** | **973** | **3.892**            |
 
 > Tam sayılar entity dosyalarındaki eksik alanlara göre değişebilir. Detaylar `outputs/logs/split_report.txt` dosyasında yer alır.
 
@@ -146,8 +153,8 @@ Google Colab'da proje kökünü yükledikten sonra:
 # Bağımlılıkları kur
 !pip install -r requirements.txt
 
-# Veri setini dönüştür (Drive'a kopyaladıysanız yolu güncelleyin)
-!python scripts/prepare_sroie_dataset.py --raw_dir data/raw --output_dir data/processed/dataset
+# Repoda işlenmiş veri seti zaten var; val yoksa ayır:
+!python scripts/split_train_val.py --data_dir data/processed/dataset
 
 # Kontrol
 !python scripts/check_dataset.py
